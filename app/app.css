@@ -1,6 +1,7 @@
 /* app css stylesheet */
 html,
 body {
+    font-family: 'Lato', sans-serif;
     box-sizing: border-box;
     padding: 0;
     margin: 0;
@@ -16,27 +17,71 @@ body {
     height: 450px;
 }
 
-/* Set gray background color and 100% height */
+.main-head {
+    height: 150px;
+    background: #fff;
+}
+
 .sidenav {
-    padding-top: 20px;
-    background-color: #f1f1f1;
     height: 100%;
+    background-color: #080808;
+    overflow-x: hidden;
+    padding-top: 20px;
 }
 
-/* Set black background color, white text and some padding */
-footer {
-    background-color: #555;
-    color: white;
-    padding: 15px;
+.main {
+    padding: 0px 10px;
 }
 
-/* On small screens, set height to 'auto' for sidenav and grid */
-@media screen and (max-width: 767px) {
+@media screen and (max-height: 450px) {
     .sidenav {
-        height: auto;
-        padding: 15px;
+        padding-top: 15px;
     }
-    .row.content {
-        height: auto;
+}
+
+@media screen and (max-width: 450px) {
+    .login-form {
+        margin-top: 10%;
     }
+
+    .register-form {
+        margin-top: 10%;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .main {
+        margin-left: 40%;
+    }
+
+    .sidenav {
+        width: 40%;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+    }
+
+    .login-form {
+        margin-top: 50%;
+    }
+
+    .register-form {
+        margin-top: 20%;
+    }
+}
+
+.login-main-text {
+    margin-top: 20%;
+    padding: 60px;
+    color: #fff;
+}
+
+.login-main-text h2 {
+    font-weight: 300;
+}
+
+.btn-black {
+    background-color: #080808 !important;
+    color: #fff;
 }

@@ -84,7 +84,7 @@ function routes($urlRouterProvider, $stateProvider, $locationProvider) {
                         }
                         $scope.logout = function () {
                             userService.logout()
-                            $state.go('root.home', {}, { reload: true })
+                            $state.go('signin', {}, { reload: true })
                         }
                     }
                 }
