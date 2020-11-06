@@ -1,5 +1,5 @@
 angular
-    .module('demoApp', ['ui.router'])
+    .module('angularApp', ['ui.router'])
     .run(function ($rootScope, $state) {
         $state.defaultErrorHandler(function (error) {
             console.log(error.detail)
@@ -122,7 +122,7 @@ function routes($urlRouterProvider, $stateProvider, $locationProvider) {
             },
             views: {
                 content: {
-                    template: 'this is only visible after login. Hello {{user}}!',
+                    templateUrl: 'admin.html',
                     controller: function ($scope, auth) {
                         $scope.user = auth.username
                     }
