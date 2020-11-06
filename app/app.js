@@ -2,11 +2,10 @@ angular
     .module('angularApp', ['ui.router'])
     .run(function ($rootScope, $state) {
         $state.defaultErrorHandler(function (error) {
-            console.log(error.detail)
             switch (error.detail) {
                 case 401:
                     console.log('Access is UnAuthorized')
-                    $state.go('login')
+                    $state.go('signin')
                     break
                 default:
                     $log.warn('$stateChangeError event catched')
@@ -14,10 +13,11 @@ angular
             }
         })
     })
+    .service('Auth', Auth)
     .factory('userService', userService)
     .config(routes)
 
-function userService() {
+function userService(Auth) {
     var usersMock = {
         testUser: {
             username: 'testUser',
@@ -30,12 +30,13 @@ function userService() {
     }
     var userService = {
         user: undefined,
-        login: function (userCredentials) {
-            // later --> $http.post('auth', userCredentials).then(...)
-            // for demo use local data
-            var user = usersMock[userCredentials.username]
-            userService.user = user && user.password == userCredentials.password ? user : undefined
-            return user
+        signIn: function (userCredentials) {
+            return Auth.signIn({ email: userCredentials.email, password: userCredentials.password }).then(function (
+                response
+            ) {
+                userService.user = response.data
+                return response.data
+            })
         },
         logout: function () {
             userService.user = undefined
@@ -44,6 +45,19 @@ function userService() {
 
     return userService
 }
+
+function Auth($http) {
+    var baseUrl = 'https://nodejs-rest-api.azurewebsites.net'
+
+    this.signIn = function (credentials) {
+        return $http.post(baseUrl + '/user/login', credentials)
+    }
+
+    this.signUp = function (payload) {
+        return $http.post(baseUrl + '/user/signup', payload)
+    }
+}
+
 function routes($urlRouterProvider, $stateProvider, $locationProvider) {
     $locationProvider.html5Mode(true)
     $urlRouterProvider.otherwise('/')
@@ -98,7 +112,7 @@ function routes($urlRouterProvider, $stateProvider, $locationProvider) {
         .state('root.restricted', {
             url: '/restricted',
             resolve: {
-                auth: function (userService, $q, $timeout) {
+                userData: function (userService, $q, $timeout) {
                     var deferred = $q.defer()
                     /* //with an async
                     return UserService.load().then(function(user){
@@ -123,8 +137,8 @@ function routes($urlRouterProvider, $stateProvider, $locationProvider) {
             views: {
                 content: {
                     templateUrl: 'admin.html',
-                    controller: function ($scope, auth) {
-                        $scope.user = auth.username
+                    controller: function ($scope, userData) {
+                        $scope.user = userData.name
                     }
                 }
             }
@@ -141,14 +155,18 @@ function routes($urlRouterProvider, $stateProvider, $locationProvider) {
             url: '/signin',
             templateUrl: 'signin/signin.html',
             controller: function ($scope, $state, userService) {
-                $scope.login = function (cred) {
-                    var user = userService.login(cred)
+                $scope.isLoading = false
 
-                    if (angular.isUndefined(user)) {
-                        alert('username or password incorrect.')
-                    } else {
-                        $state.go('root.restricted')
-                    }
+                $scope.login = function (cred) {
+                    $scope.isLoading = true
+                    userService.signIn(cred).then(function (user) {
+                        $scope.isLoading = false
+                        if (angular.isUndefined(user)) {
+                            console.log('Couldnt retrieve user')
+                        } else {
+                            $state.go('root.restricted')
+                        }
+                    })
                 }
             }
         })
