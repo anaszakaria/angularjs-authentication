@@ -66,7 +66,7 @@ function routes($urlRouterProvider, $stateProvider, $locationProvider) {
                     controller: function ($scope, $state, user, userService) {
                         $scope.user = user
                         $scope.login = function () {
-                            $state.go('login')
+                            $state.go('signin')
                         }
                         $scope.logout = function () {
                             userService.logout()
@@ -83,7 +83,7 @@ function routes($urlRouterProvider, $stateProvider, $locationProvider) {
             url: '/',
             views: {
                 content: {
-                    template: 'Hello at home'
+                    templateUrl: 'home.html'
                 }
             }
         })
@@ -91,7 +91,7 @@ function routes($urlRouterProvider, $stateProvider, $locationProvider) {
             url: '/about',
             views: {
                 content: {
-                    template: 'about view'
+                    templateUrl: 'about.html'
                 }
             }
         })
@@ -129,9 +129,17 @@ function routes($urlRouterProvider, $stateProvider, $locationProvider) {
                 }
             }
         })
-        .state('login', {
-            url: '/login',
-            templateUrl: 'login.html',
+        .state('root.signup', {
+            url: '/signup',
+            views: {
+                content: {
+                    templateUrl: 'signup/signup.html'
+                }
+            }
+        })
+        .state('signin', {
+            url: '/signin',
+            templateUrl: 'signin/signin.html',
             controller: function ($scope, $state, userService) {
                 $scope.login = function (cred) {
                     var user = userService.login(cred)
