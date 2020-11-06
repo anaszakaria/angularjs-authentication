@@ -87,9 +87,6 @@ function routes($urlRouterProvider, $stateProvider, $locationProvider) {
                             $state.go('root.home', {}, { reload: true })
                         }
                     }
-                },
-                'footer@root': {
-                    template: '<p>footer view</p>'
                 }
             }
         })
