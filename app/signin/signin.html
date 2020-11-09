@@ -10,7 +10,7 @@
 <div class="main">
     <div class="col-md-6 col-sm-12">
         <div class="login-form">
-            <form ng-submit="login(userCred)">
+            <form>
                 <div class="form-group">
                     <label>Email</label>
                     <input type="email" class="form-control" ng-model="userCred.email" placeholder="Email" />
@@ -19,8 +19,10 @@
                     <label>Password</label>
                     <input type="password" class="form-control" ng-model="userCred.password" placeholder="Password" />
                 </div>
-                <button type="submit" class="btn btn-black" ng-disabled="isLoading">Login</button>
-                <button type="submit" class="btn btn-secondary">Register</button>
+                <button type="submit" class="btn btn-black" ng-disabled="isLoading" ng-click="login(userCred)">
+                    Login
+                </button>
+                <button ui-sref="root.signup" href="#" class="btn btn-secondary">Register</button>
                 <h5 ng-if="isLoading" style="color: red">In Progress...</h5>
             </form>
         </div>
