@@ -59,19 +59,7 @@ app.config([
                     }
                 },
                 resolve: {
-                    userData: function (userService, $q, $timeout) {
-                        var deferred = $q.defer()
-
-                        $timeout(function () {
-                            if (angular.isUndefined(userService.user)) {
-                                return deferred.reject(401)
-                            } else {
-                                return deferred.resolve(userService.user)
-                            }
-                        })
-
-                        return deferred.promise
-                    }
+                    userData: routeGuard
                 }
             })
             .state('root.about', {
@@ -84,29 +72,6 @@ app.config([
             })
             .state('root.restricted', {
                 url: '/restricted',
-                resolve: {
-                    userData: function (userService, $q, $timeout) {
-                        var deferred = $q.defer()
-                        /* with an async
-                    return UserService.load().then(function(user){
-                      if (permissionService.can(user, {goTo: state})) {
-                        return deferred.resolve({});
-                      } else {
-                        return deferred.reject({redirectTo: 'some_other_state'});
-                      }
-                    }*/
-
-                        $timeout(function () {
-                            if (angular.isUndefined(userService.user)) {
-                                return deferred.reject(401)
-                            } else {
-                                return deferred.resolve(userService.user)
-                            }
-                        })
-
-                        return deferred.promise
-                    }
-                },
                 views: {
                     content: {
                         templateUrl: 'admin.html',
@@ -114,61 +79,34 @@ app.config([
                             $scope.user = userData.name
                         }
                     }
+                },
+                resolve: {
+                    userData: routeGuard
                 }
             })
             .state('signup', {
                 url: '/signup',
                 templateUrl: 'signup/signup.html',
-                controller: function ($scope, $state, userService) {
-                    $scope.isLoading = false
-
-                    $scope.signUp = function () {
-                        $scope.isLoading = true
-                        var userData = {
-                            name: $scope.name,
-                            email: $scope.email,
-                            password: $scope.password
-                        }
-
-                        userService
-                            .signUp(userData)
-                            .then(function (response) {
-                                console.log(response.data.message)
-                                $scope.isLoading = false
-                                $state.go('signin')
-                            })
-                            .catch(function (error) {
-                                $scope.isLoading = false
-                                console.log('Unable to register user')
-                            })
-                    }
-                }
+                controller: 'signUpController'
             })
             .state('signin', {
                 url: '/signin',
                 templateUrl: 'signin/signin.html',
-                controller: function ($scope, $state, userService) {
-                    $scope.isLoading = false
-
-                    $scope.login = function (cred) {
-                        $scope.isLoading = true
-                        userService
-                            .signIn(cred)
-                            .then(function (user) {
-                                $scope.isLoading = false
-                                if (angular.isUndefined(user)) {
-                                    console.log('Couldnt retrieve user')
-                                } else {
-                                    $state.go('root.home')
-                                }
-                            })
-                            .catch(function (error) {
-                                console.log(error.data.message)
-                                $scope.isLoading = false
-                                console.log('Invalid email or password')
-                            })
-                    }
-                }
+                controller: 'signInController'
             })
     }
 ])
+
+function routeGuard(userService, $q, $timeout) {
+    var deferred = $q.defer()
+
+    $timeout(function () {
+        if (angular.isUndefined(userService.user)) {
+            return deferred.reject(401)
+        } else {
+            return deferred.resolve(userService.user)
+        }
+    })
+
+    return deferred.promise
+}

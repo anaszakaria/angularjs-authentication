@@ -3,21 +3,27 @@
 app.controller('signInController', [
     '$scope',
     '$state',
-    function ($scope, $state) {
+    'userService',
+    function ($scope, $state, userService) {
         $scope.isLoading = false
 
-        $scope.signIn = function () {
+        $scope.login = function (cred) {
             $scope.isLoading = true
-            // Auth.signIn({ email: $scope.email, password: $scope.password })
-            //     .then(function (response) {
-            //         // user successfully authenticated, refresh UserProfile
-            //         $scope.isLoading = false
-            //         return userProfile.$updateProfile(response.data)
-            //     })
-            //     .then(function () {
-            //         // UserProfile is refreshed, redirect user somewhere
-            //         $state.go('root')
-            //     })
+            userService
+                .signIn(cred)
+                .then(function (user) {
+                    $scope.isLoading = false
+                    if (angular.isUndefined(user)) {
+                        console.log('Couldnt retrieve user')
+                    } else {
+                        $state.go('root.home')
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error.data.message)
+                    $scope.isLoading = false
+                    console.log('Invalid email or password')
+                })
         }
     }
 ])
