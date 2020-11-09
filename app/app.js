@@ -97,7 +97,25 @@ function routes($urlRouterProvider, $stateProvider, $locationProvider) {
             url: '/',
             views: {
                 content: {
-                    templateUrl: 'home.html'
+                    templateUrl: 'home.html',
+                    controller: function ($scope, userData) {
+                        $scope.user = userData.name
+                    }
+                }
+            },
+            resolve: {
+                userData: function (userService, $q, $timeout) {
+                    var deferred = $q.defer()
+
+                    $timeout(function () {
+                        if (angular.isUndefined(userService.user)) {
+                            return deferred.reject(401)
+                        } else {
+                            return deferred.resolve(userService.user)
+                        }
+                    })
+
+                    return deferred.promise
                 }
             }
         })
@@ -114,7 +132,7 @@ function routes($urlRouterProvider, $stateProvider, $locationProvider) {
             resolve: {
                 userData: function (userService, $q, $timeout) {
                     var deferred = $q.defer()
-                    /* //with an async
+                    /* with an async
                     return UserService.load().then(function(user){
                       if (permissionService.can(user, {goTo: state})) {
                         return deferred.resolve({});
@@ -186,7 +204,7 @@ function routes($urlRouterProvider, $stateProvider, $locationProvider) {
                             if (angular.isUndefined(user)) {
                                 console.log('Couldnt retrieve user')
                             } else {
-                                $state.go('root.restricted')
+                                $state.go('root.home')
                             }
                         })
                         .catch(function (error) {
