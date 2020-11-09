@@ -38,6 +38,9 @@ function userService(Auth) {
                 return response.data
             })
         },
+        signUp: function (userData) {
+            return Auth.signUp(userData)
+        },
         logout: function () {
             userService.user = undefined
         }
@@ -140,11 +143,31 @@ function routes($urlRouterProvider, $stateProvider, $locationProvider) {
                 }
             }
         })
-        .state('root.signup', {
+        .state('signup', {
             url: '/signup',
-            views: {
-                content: {
-                    templateUrl: 'signup/signup.html'
+            templateUrl: 'signup/signup.html',
+            controller: function ($scope, $state, userService) {
+                $scope.isLoading = false
+
+                $scope.signUp = function () {
+                    $scope.isLoading = true
+                    var userData = {
+                        name: $scope.name,
+                        email: $scope.email,
+                        password: $scope.password
+                    }
+
+                    userService
+                        .signUp(userData)
+                        .then(function (response) {
+                            console.log(response.data.message)
+                            $scope.isLoading = false
+                            $state.go('signin')
+                        })
+                        .catch(function (error) {
+                            $scope.isLoading = false
+                            console.log('Unable to register user')
+                        })
                 }
             }
         })

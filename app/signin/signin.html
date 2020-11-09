@@ -4,25 +4,29 @@
             Application<br />
             Login Page
         </h2>
-        <p>Login or register from here to access.</p>
+        <p>Login here to access the application</p>
     </div>
 </div>
 <div class="main">
     <div class="col-md-6 col-sm-12">
         <div class="login-form">
-            <form>
+            <form ng-submit="login(userCred)">
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="email" class="form-control" ng-model="userCred.email" placeholder="Email" />
+                    <input type="email" class="form-control" ng-model="userCred.email" placeholder="Email" required />
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" class="form-control" ng-model="userCred.password" placeholder="Password" />
+                    <input
+                        type="password"
+                        class="form-control"
+                        ng-model="userCred.password"
+                        placeholder="Password"
+                        required
+                    />
                 </div>
-                <button type="submit" class="btn btn-black" ng-disabled="isLoading" ng-click="login(userCred)">
-                    Login
-                </button>
-                <button ui-sref="root.signup" href="#" class="btn btn-secondary">Register</button>
+                <button type="submit" class="btn btn-black" ng-disabled="isLoading">Login</button>
+                <button ui-sref="signup" href="#" class="btn btn-secondary">Register</button>
                 <h5 ng-if="isLoading" style="color: red">In Progress...</h5>
             </form>
         </div>
