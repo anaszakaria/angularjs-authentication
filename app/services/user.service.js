@@ -18,6 +18,9 @@ app.factory('userService', [
             },
             logout: function () {
                 userService.user = undefined
+            },
+            getUser: function () {
+                return userService.user
             }
         }
 

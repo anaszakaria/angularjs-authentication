@@ -12,12 +12,16 @@
             <ul class="nav navbar-nav">
                 <li><a ui-sref="root.home" href="#">Home</a></li>
                 <li><a ui-sref="root.about" href="#">About</a></li>
-                <li><a ui-sref="root.restricted" href="#">Admin</a></li>
+                <li><a ui-sref="root.profile" href="#">Profile</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a ng-if="!user" ng-click="login()"><span class="glyphicon glyphicon-log-in"></span> Sign In</a>
-                    <a ng-if="user" ng-click="logout()"><span class="glyphicon glyphicon-log-in"></span> Sign Out</a>
+                    <a class="cursor-pointer" ng-if="user" ng-click="logout()"
+                        ><span class="glyphicon glyphicon-log-in"></span> Sign Out</a
+                    >
+                    <a class="cursor-pointer" ng-if="!user" ng-click="signIn()"
+                        ><span class="glyphicon glyphicon-log-in"></span> Sign In</a
+                    >
                 </li>
             </ul>
         </div>

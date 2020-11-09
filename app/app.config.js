@@ -24,27 +24,13 @@ app.config([
             .state('root', {
                 url: '',
                 abstract: true,
-                resolve: {
-                    user: function (userService) {
-                        return userService.user // would be async in a real app
-                    }
-                },
                 views: {
                     '': {
                         templateUrl: 'layout.html'
                     },
                     'header@root': {
-                        templateUrl: 'app-header.html',
-                        controller: function ($scope, $state, user, userService) {
-                            $scope.user = user
-                            $scope.login = function () {
-                                $state.go('signin')
-                            }
-                            $scope.logout = function () {
-                                userService.logout()
-                                $state.go('signin', {}, { reload: true })
-                            }
-                        }
+                        templateUrl: 'components/app-header.html',
+                        controller: 'appHeaderController'
                     }
                 }
             })
@@ -52,9 +38,9 @@ app.config([
                 url: '/',
                 views: {
                     content: {
-                        templateUrl: 'home.html',
+                        templateUrl: 'home/home.html',
                         controller: function ($scope, userData) {
-                            $scope.user = userData.name
+                            $scope.user = userData
                         }
                     }
                 },
@@ -66,17 +52,17 @@ app.config([
                 url: '/about',
                 views: {
                     content: {
-                        templateUrl: 'about.html'
+                        templateUrl: 'about/about.html'
                     }
                 }
             })
-            .state('root.restricted', {
-                url: '/restricted',
+            .state('root.profile', {
+                url: '/profile',
                 views: {
                     content: {
-                        templateUrl: 'admin.html',
+                        templateUrl: 'profile/profile.html',
                         controller: function ($scope, userData) {
-                            $scope.user = userData.name
+                            $scope.user = userData
                         }
                     }
                 },
