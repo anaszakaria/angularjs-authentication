@@ -1,0 +1,38 @@
+<h3>Employee Detail</h3>
+<div class="panel panel-primary">
+    <div class="panel-body">
+        <div ng-show="isLoading" style="color: red"><span class="glyphicon glyphicon-time"></span> Loading...</div>
+        <div ng-show="isNotFound" style="color: red">
+            <span class="glyphicon glyphicon-thumbs-down"></span> Employee Not Found
+            <hr />
+            <a href="/employee/list" class="btn btn-primary">
+                <i class="glyphicon glyphicon-chevron-left"></i> Go to Employee List
+            </a>
+        </div>
+        <div ng-show="employee">
+            <div class="row">
+                <div class="col-sm-12">
+                    <a href="/employeelist" class="btn btn-primary">
+                        <i class="glyphicon glyphicon-chevron-left"></i> Back
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4"><strong>Employee Name</strong></div>
+                <div class="col-sm-7">{{ employee.name }}</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4"><strong>Email</strong></div>
+                <div class="col-sm-7">{{ employee.email }}</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4"><strong>Phone</strong></div>
+                <div class="col-sm-7">{{ employee.phone }}</div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4"><strong>Website</strong></div>
+                <div class="col-sm-7">{{ employee.website }}</div>
+            </div>
+        </div>
+    </div>
+</div>

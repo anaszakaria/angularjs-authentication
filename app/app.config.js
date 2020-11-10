@@ -70,6 +70,30 @@ app.config([
                     userData: routeGuard
                 }
             })
+            .state('root.employeelist', {
+                url: '/employeelist',
+                views: {
+                    content: {
+                        templateUrl: 'employee/employee-list/employee-list.html',
+                        controller: 'employeeListController'
+                    }
+                },
+                resolve: {
+                    userData: routeGuard
+                }
+            })
+            .state('root.employeedetail', {
+                url: '/employeedetail/:employeeId',
+                views: {
+                    content: {
+                        templateUrl: 'employee/employee-detail/employee-detail.html',
+                        controller: 'employeeDetailController'
+                    }
+                },
+                resolve: {
+                    userData: routeGuard
+                }
+            })
             .state('signup', {
                 url: '/signup',
                 templateUrl: 'signup/signup.html',

@@ -1,0 +1,26 @@
+<h3>Employee List</h3>
+<div class="panel panel-primary">
+    <div class="panel-body">
+        <div ng-show="isLoading" style="color: red"><span class="glyphicon glyphicon-time"></span> Loading...</div>
+        <div class="table-responsive" ng-show="!isLoading">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Website</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="employee in employees">
+                        <td><a href="/employeedetail/{{employee.id}}">{{ employee.name }}</a></td>
+                        <td>{{ employee.email }}</td>
+                        <td>{{ employee.phone }}</td>
+                        <td>{{ employee.website }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
