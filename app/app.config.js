@@ -2,7 +2,7 @@ app.run(function ($rootScope, $state) {
     $state.defaultErrorHandler(function (error) {
         switch (error.detail) {
             case 401:
-                console.log('Access is UnAuthorized')
+                // console.log('Access is UnAuthorized')
                 $state.go('signin')
                 break
             default:

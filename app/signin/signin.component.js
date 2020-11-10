@@ -13,6 +13,7 @@ app.controller('signInController', [
                 .signIn(cred)
                 .then(function (user) {
                     $scope.isLoading = false
+                    console.log(user)
                     if (angular.isUndefined(user)) {
                         console.log('Couldnt retrieve user')
                     } else {
